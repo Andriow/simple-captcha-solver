@@ -44,11 +44,11 @@ class Captcha(object):
         invert = 255 - opening
 
         solved = pytesseract.image_to_string(invert, lang='eng', config='--psm 6')
-        self.logger.info(f'captcha solved: {solved}')
+        self.logger.info(f'captcha solved: {solved} .')
 
         solved2 = pytesseract.image_to_string(invert, lang='eng', 
                                               config='--psm 6 -c tessedit_char_whitelist=0123456789abcdefghijklmnopqrstuvwxyz')
-        self.logger.info(f'captcha solved2: {solved2}')
+        self.logger.info(f'captcha solved2: {solved2} .')
 
 if __name__ == "__main__":
     captcha = Captcha()
