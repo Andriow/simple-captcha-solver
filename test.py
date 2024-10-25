@@ -33,7 +33,7 @@ class TestCaptcha(unittest.TestCase):
         test = self.captcha.filter_allowed_characters(text=testString)
         self.assertEqual(test, '0123456789abcdefghijklmnopqrstuvwxyz')
 
-    def testFilter_allowed_characters02(self):
+    def testFilter_allowed_characters03(self):
         testString = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%¨&*()êâîôûÂÊÎ'
         test = self.captcha.filter_allowed_characters(text=testString)
         self.assertEqual(test, '0123456789abcdefghijklmnopqrstuvwxyz')
