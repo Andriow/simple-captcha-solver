@@ -19,3 +19,16 @@ To run the script with example code:
 ```sh
 python3 captcha.py
 ```
+
+To Test
+```sh
+python3 -m unittest test.py
+```
+
+```sh
+coverage erase
+
+coverage run test.py
+
+coverage report -m
+```
