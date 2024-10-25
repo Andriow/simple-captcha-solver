@@ -1,7 +1,8 @@
 import base64
 import logging
-import tesseract
-import cv2.cv as cv
+import pytesseract
+import cv2
+from PIL import Image, ImageEnhance, ImageFilter
 
 class Captcha(object):
     def __init__(self, logger: logging.Logger = None):
@@ -31,15 +32,31 @@ class Captcha(object):
             f.write(imgdata)
 
     def solver(self):
-        self.logger.info('Solving the cpatcha')
-        gray = cv.LoadImage('captcha.jpg', cv.CV_LOAD_IMAGE_GRAYSCALE)
-        cv.Threshold(gray, gray, 231, 255, cv.CV_THRESH_BINARY)
-        api = tesseract.TessBaseAPI()
-        api.Init(".","eng",tesseract.OEM_DEFAULT)
-        api.SetVariable("tessedit_char_whitelist", "0123456789abcdefghijklmnopqrstuvwxyz")
-        api.SetPageSegMode(tesseract.PSM_SINGLE_WORD)
-        tesseract.SetCvImage(gray,api)
-        solved = api.GetUTF8Text()
+        self.logger.info('Solving the cpatcha using only openCV')
+        # Grayscale, Gaussian blur, Otsu's threshold
+        image = cv2.imread('captcha.jpg')
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (3,3), 0)
+        thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+
+        # Morph open to remove noise and invert image
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
+        opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=1)
+        invert = 255 - opening
+
+        solved = data = pytesseract.image_to_string(invert, lang='eng', config='--psm 6')
+        
+        self.logger.info(f'captcha solved: {solved}')
+
+    def solver2(self):
+        self.logger.info('Solving the cpatcha using PIL')
+        im = Image.open('captcha.jpg') # the second one 
+        im = im.filter(ImageFilter.MedianFilter())
+        enhancer = ImageEnhance.Contrast(im)
+        im = enhancer.enhance(2)
+        im = im.convert('1')
+        im.save('temp2.jpg')
+        solved = pytesseract.image_to_string(Image.open('temp2.jpg'))
         self.logger.info(f'captcha solved: {solved}')
     
 if __name__ == "__main__":
