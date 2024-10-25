@@ -47,7 +47,7 @@ class Captcha(object):
         self.logger.info(f'captcha solved: {solved}')
 
         solved2 = pytesseract.image_to_string(invert, lang='eng', 
-                                              config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789abcdefghijklmnopqrstuvwxyz')
+                                              config='--psm 6 -c tessedit_char_whitelist=0123456789abcdefghijklmnopqrstuvwxyz')
         self.logger.info(f'captcha solved2: {solved2}')
 
 if __name__ == "__main__":
