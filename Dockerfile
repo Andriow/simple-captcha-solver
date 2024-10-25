@@ -10,6 +10,7 @@ RUN apt update && \
     apt install -y apt-utils && \
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt install -y gcc g++ python3-dev curl apt-transport-https gnupg2 openssl nano && \
+    apt install -y ffmpeg libsm6 libxext6 && \
     apt upgrade -y && \
     pip install --disable-pip-version-check -r requirements.txt && \
     apt autoremove -y && apt clean && rm -rf ~/.cache/pip/ && \
