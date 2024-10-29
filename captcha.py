@@ -26,9 +26,9 @@ class Captcha(object):
                 self.logger.setLevel(level)
 
     def create_img_file(self, imgstring:str):
-        imgdata = base64.b64decode(imgstring)
         self.logger.info('Converting and saving image.')
-        filename = self.local_file  # I assume you have a way of picking unique filenames
+        imgdata = base64.b64decode(imgstring)
+        filename = self.local_file 
         with open(filename, 'wb') as f:
             f.write(imgdata)
 
@@ -47,7 +47,7 @@ class Captcha(object):
 
         solved = pytesseract.image_to_string(invert, lang='eng', 
                                               config='--psm 6 -c tessedit_char_whitelist=0123456789abcdefghijklmnopqrstuvwxyz')
-        self.logger.info(f'captcha solved2: {solved}')
+        self.logger.info(f'captcha solved: {solved}')
         return solved
 
     def filter_allowed_characters(self, text:str) -> str:
