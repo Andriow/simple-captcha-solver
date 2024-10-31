@@ -21,7 +21,7 @@ jobs:
           docker build -t simple_captcha_solver:latest . --no-cache
 
       - name: Docker tests
-        run: docker run --rm --name=captcha_solver captcha-solver:latest python3 -m unittest test.py
+        run: docker run --rm simple_captcha_solver:latest python3 -m unittest test.py
 
       - name: Docker TAG
         run: docker tag simple_captcha_solver:latest ghcr.io/andriow/simple_captcha_solver:latest
