@@ -18,7 +18,10 @@ jobs:
       - name: Build and tag image
         run: |
           COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-          docker build -t ghcr.io/andriow/simple_captcha_solver:$COMMIT_SHA . --no-cache
+          docker build -t simple_captcha_solver:latest . --no-cache
+
+      - name: Docker TAG
+        run: docker tag simple_captcha_solver:latest ghcr.io/andriow/simple_captcha_solver:latest
 
       - name: Push image to GHCR
-        run: docker push ghcr.io/andriow/simple_captcha_solver:$COMMIT_SHA
+        run: docker push ghcr.io/andriow/simple_captcha_solver:latest
