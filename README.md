@@ -64,3 +64,6 @@ coverage run test.py
 
 coverage report -m
 ```
+
+## next steps:
+Evaluate the [ollama-ocr library](https://github.com/imanoop7/Ollama-OCR)
